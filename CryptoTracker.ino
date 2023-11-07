@@ -376,13 +376,8 @@ void loop()
 
     if (currentMillis - previousMillisScreen >= screenChangeDelay) {
       previousMillisScreen = currentMillis;
-    
-      if (currentCrypto < cryptosCount){
-        displayCrypto(cryptos[currentCrypto]);
-        currentCrypto++;
-      } else {
-        currentCrypto = 0; //Restart crypto to show
-      }
+      currentCrypto %= cryptosCount;
+      displayCrypto(cryptos[currentCrypto++]);
     }
   }
   
