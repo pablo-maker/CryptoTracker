@@ -355,31 +355,26 @@ void loop()
 {
   wm.process(); //WiFi Manager process
 
-  if (WiFi.status() == WL_CONNECTED){
-    if (startUpFlag){
-      startUpFlag = false;
-      displayConnected();
-      Serial.println("connected");
-    }
+  if (WiFi.status() != WL_CONNECTED)
+    return;
 
-    unsigned long currentMillis = millis();
-  
-
-    if (currentMillis - previousMillisApi >= apiUpdateRate) {
-
-      previousMillisApi = currentMillis;
-
-      Serial.println("Colecting data");
-      downloadData("usd");
-    }
-
-
-    if (currentMillis - previousMillisScreen >= screenChangeDelay) {
-      previousMillisScreen = currentMillis;
-      currentCrypto %= cryptosCount;
-      displayCrypto(cryptos[currentCrypto++]);
-    }
+  if (startUpFlag) {
+    startUpFlag = false;
+    displayConnected();
+    Serial.println("connected");
   }
-  
-  
+
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - previousMillisApi >= apiUpdateRate) {
+    previousMillisApi = currentMillis;
+    Serial.println("Colecting data");
+    downloadData("usd");
+  }
+
+  if (currentMillis - previousMillisScreen >= screenChangeDelay) {
+    previousMillisScreen = currentMillis;
+    currentCrypto %= cryptosCount;
+    displayCrypto(cryptos[currentCrypto++]);
+  }
 }
